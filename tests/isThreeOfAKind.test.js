@@ -18,3 +18,19 @@ test('Test that threeOfAKind returns a higher score for a stronger hand (higher 
   let hand2Score = CompareHands.isThreeOfAKind(hand2);
   expect(hand2Score).toBeGreaterThan(hand1Score);
 });
+
+test('Test that threeOfAKind returns a higher score for a stronger hand (higher kicker)', () => {
+  let hand1 = new Hand('♥7', '♦2', '♣7', '♠4', '♠7');
+  let hand2 = new Hand('♥7', '♣3', '♣7', '♣4', '♠7');
+  let hand1Score = CompareHands.isThreeOfAKind(hand1);
+  let hand2Score = CompareHands.isThreeOfAKind(hand2);
+  expect(hand2Score).toBeGreaterThan(hand1Score);
+});
+
+test('Test that threeOfAKind returns a equal score for a equal hand', () => {
+  let hand1 = new Hand('♥7', '♦2', '♣7', '♠4', '♠7');
+  let hand2 = new Hand('♥7', '♣2', '♣7', '♣4', '♠7');
+  let hand1Score = CompareHands.isThreeOfAKind(hand1);
+  let hand2Score = CompareHands.isThreeOfAKind(hand2);
+  expect(hand2Score).toEqual(hand1Score);
+});
