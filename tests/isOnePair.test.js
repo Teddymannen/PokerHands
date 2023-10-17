@@ -1,14 +1,27 @@
 const Hand = require('../Hand');
 const CompareHands = require('../CompareHands');
 const suits = '♥♦♣♠';
+const ranks = '23456789TJQKA';
+
+function offsetRank(rankIndex, amountOffsets) {
+  let offsetRanks = [];
+  for (let i = 0; i < amountOffsets; i++) {
+    offsetRanks.push(ranks[(rankIndex + i) % ranks.length]);
+  }
+  return offsetRanks;
+}
 
 test('check that isOnePair returns truthy if one pair', () => {
-  let hand = new Hand('♥9', '♦9', '♦8', '♣7', '♥5');
-  expect(CompareHands.isOnePair(hand)).toBeTruthy();
+  for (let rankIndex = 0; rankIndex < ranks.length; rankIndex++) {
+    let rank = ranks[rankIndex];
+    let offsetRanks = offsetRank(rankIndex, 3);
+    let hand = new Hand('♥' + rank, '♦' + rank, '♦' + offsetRanks[0], '♣' + offsetRanks[1], '♥' + offsetRanks[2]);
+    expect(CompareHands.isOnePair(hand)).toBeTruthy();
+  }
 });
 
 test('check that isOnePair returns falsey if not one pair', () => {
-  let hand = new Hand('♥9', '♦8', '♦7', '♣6', '♥5');
+  let hand = new Hand('♥9', '♦8', '♦7', '♣6', '♥3');
   expect(CompareHands.isOnePair(hand)).toBeFalsy();
 });
 
