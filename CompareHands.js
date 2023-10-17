@@ -39,7 +39,7 @@ module.exports = class CompareHands {
     return this.isStraight(hand) && this.isFlush(hand);
   }
 
-  static isFourOfAKind(hand) { // TODO!
+  static isFourOfAKind(hand) {
     let ranks = '';
     for (let card of hand.cards) {
       ranks += card.rank;
@@ -62,7 +62,41 @@ module.exports = class CompareHands {
     return 0;
   }
 
-  static isFullHouse(hand) { // TODO!
+  static isFullHouse(hand) {
+    let ranks = '';
+    for (let card of hand.cards) {
+      ranks += card.rank;
+    }
+
+    let score = 0, counter = 0;
+    for (let card of hand.cards) {
+      score += this.rankToPoint(card.rank) * 10 ** counter;
+      counter += 2;
+    }
+
+    let rankCounts = {};
+    for (let rank of ranks) {
+      rankCounts[rank] = (rankCounts[rank] || 0) + 1;
+    }
+
+    let threeOfAKind = false, twoOfAKind = false;
+    let threeOfAKindRank = '', twoOfAKindRank = '';
+    for (let rank in rankCounts) {
+      if (rankCounts[rank] === 3) {
+        threeOfAKind = true;
+        threeOfAKindRank = rank;
+      }
+      if (rankCounts[rank] === 2) {
+        twoOfAKind = true;
+        twoOfAKindRank = rank;
+      }
+    }
+
+    if (threeOfAKind && twoOfAKind) {
+      score += this.rankToPoint(threeOfAKindRank) * 10 ** counter;
+      return score;
+    }
+
     return 0;
   }
 
@@ -104,7 +138,7 @@ module.exports = class CompareHands {
     return this.rankToPoint(ranks[4]);
   }
 
-  static isThreeOfAKind(hand) { // TODO!
+  static isThreeOfAKind(hand) {
     let ranks = '';
     for (let card of hand.cards) {
       ranks += card.rank;
@@ -127,7 +161,7 @@ module.exports = class CompareHands {
     return 0;
   }
 
-  static isTwoPair(hand) { // TODO!
+  static isTwoPair(hand) {
     this.sortByRank(hand);
     const handRanks = hand.cards.map(card => card.rank);
     const uniqueRanks = [...new Set(handRanks)];
@@ -156,7 +190,7 @@ module.exports = class CompareHands {
     return score;
   }
 
-  static isOnePair(hand) { // TODO!
+  static isOnePair(hand) {
     this.sortByRank(hand);
     const handRanks = hand.cards.map(card => card.rank);
     const uniqueRanks = [...new Set(handRanks)];
@@ -185,7 +219,7 @@ module.exports = class CompareHands {
     return score;
   }
 
-  static isHighestCard(hand) { // TODO!
+  static isHighestCard(hand) {
     this.sortByRank(hand);
     let score = 0;
     let counter = 0;
