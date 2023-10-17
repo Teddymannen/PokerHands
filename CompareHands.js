@@ -128,15 +128,72 @@ module.exports = class CompareHands {
   }
 
   static isTwoPair(hand) { // TODO!
-    return 0;
+    this.sortByRank(hand);
+    const handRanks = hand.cards.map(card => card.rank);
+    const uniqueRanks = [...new Set(handRanks)];
+    let pairRanks = [];
+    let nonPairRanks = [];
+
+    for (let rank of uniqueRanks) {
+      if (handRanks.filter(handRank => handRank === rank).length === 2) {
+        pairRanks.push(rank);
+      } else {
+        nonPairRanks.push(rank);
+      }
+    }
+
+    // not a two pair -> 0
+    if (pairRanks.length !== 2) { return 0; }
+
+    // Add score 
+    let score = 0;
+    let counter = 0;
+    for (let rank of nonPairRanks) {
+      score += this.rankToPoint(rank) * 10 ** counter;
+      counter += 2;
+    }
+    score += this.rankToPoint(pairRanks[1]) * 10 ** (counter + 2) + this.rankToPoint(pairRanks[0]) * 10 ** (counter);
+    return score;
   }
 
   static isOnePair(hand) { // TODO!
-    return 0;
+    this.sortByRank(hand);
+    const handRanks = hand.cards.map(card => card.rank);
+    const uniqueRanks = [...new Set(handRanks)];
+    let pairRanks = [];
+    let nonPairRanks = [];
+
+    for (let rank of uniqueRanks) {
+      if (handRanks.filter(handRank => handRank === rank).length === 2) {
+        pairRanks.push(rank);
+      } else {
+        nonPairRanks.push(rank);
+      }
+    }
+
+    // not a one pair -> 0
+    if (pairRanks.length !== 1) { return 0; }
+
+    // Add score 
+    let score = 0;
+    let counter = 0;
+    for (let rank of nonPairRanks) {
+      score += this.rankToPoint(rank) * 10 ** counter;
+      counter += 2;
+    }
+    score += this.rankToPoint(pairRanks[0]) * 10 ** counter
+    return score;
   }
 
   static isHighestCard(hand) { // TODO!
-    return 0;
+    this.sortByRank(hand);
+    let score = 0;
+    let counter = 0;
+    for (let card of hand.cards) {
+      score += this.rankToPoint(card.rank) * 10 ** counter;
+      counter += 2;
+    }
+    return score;
   }
 
   // helper functions below:
