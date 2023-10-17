@@ -106,11 +106,14 @@ module.exports = class CompareHands {
     // not a two pair -> 0
     if (pairRanks.length !== 2) { return 0; }
 
-    let score = this.rankToPoint(pairRanks[1]) * 10000 + this.rankToPoint(pairRanks[0]) + 100;
-    // Add remaining cards to score (kicker)
+    // Add score 
+    let score = 0;
+    let counter = 0;
     for (let rank of nonPairRanks) {
-      score += this.rankToPoint(rank);
+      score += this.rankToPoint(rank) * 10 ** counter;
+      counter += 2;
     }
+    score += this.rankToPoint(pairRanks[1]) * 10 ** (counter + 2) + this.rankToPoint(pairRanks[0]) * 10 ** (counter);
     return score;
   }
 
@@ -132,11 +135,14 @@ module.exports = class CompareHands {
     // not a one pair -> 0
     if (pairRanks.length !== 1) { return 0; }
 
-    let score = this.rankToPoint(pairRanks[0]) + 10000;
-    // Add remaining cards to score (kicker)
+    // Add score 
+    let score = 0;
+    let counter = 0;
     for (let rank of nonPairRanks) {
-      score += this.rankToPoint(rank);
+      score += this.rankToPoint(rank) * 10 ** counter;
+      counter += 2;
     }
+    score += this.rankToPoint(pairRanks[0]) * 10 ** counter
     return score;
   }
 
