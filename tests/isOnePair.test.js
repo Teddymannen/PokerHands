@@ -5,7 +5,7 @@ const ranks = '23456789TJQKA';
 
 function offsetRank(rankIndex, amountOffsets) {
   let offsetRanks = [];
-  for (let i = 0; i < amountOffsets; i++) {
+  for (let i = 1; i <= amountOffsets; i++) {
     offsetRanks.push(ranks[(rankIndex + i) % ranks.length]);
   }
   return offsetRanks;
