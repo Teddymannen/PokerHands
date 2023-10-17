@@ -12,7 +12,7 @@ test('Test that threeOfAKind returns falsey is not three of a kind', () => {
 });
 
 test('Test that threeOfAKind returns a higher score for a stronger hand (higher three of a kind)', () => {
-  let hand1 = new Hand('♥7', '♦2', '♣7', '♠3', '♠7');
+  let hand1 = new Hand('♥7', '♦A', '♣7', '♠K', '♠7');
   let hand2 = new Hand('♥T', '♣2', '♣T', '♣3', '♠T');
   let hand1Score = CompareHands.isThreeOfAKind(hand1);
   let hand2Score = CompareHands.isThreeOfAKind(hand2);
