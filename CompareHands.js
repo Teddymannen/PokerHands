@@ -40,6 +40,25 @@ module.exports = class CompareHands {
   }
 
   static isFourOfAKind(hand) { // TODO!
+    let ranks = '';
+    for (let card of hand.cards) {
+      ranks += card.rank;
+    }
+
+    let score = 0, counter = 0;
+    for (let card of hand.cards) {
+      score += this.rankToPoint(card.rank) * 10 ** counter;
+      counter += 2;
+    }
+
+    let rankCounts = {};
+    for (let rank of ranks) {
+      rankCounts[rank] = (rankCounts[rank] || 0) + 1;
+
+      if (rankCounts[rank] === 4) {
+        return score + this.rankToPoint(rank) * 10 ** counter;
+      }
+    }
     return 0;
   }
 
@@ -79,12 +98,32 @@ module.exports = class CompareHands {
       ranks = 'A' + ranks.slice(0, 4);
     }
     // not a straight -> 0
+    // Check if the hand is included in A23456789TJQKA+
     if (!('A' + this.ranks).includes(ranks)) { return 0; };
     // return points depending on strength of straight
     return this.rankToPoint(ranks[4]);
   }
 
   static isThreeOfAKind(hand) { // TODO!
+    let ranks = '';
+    for (let card of hand.cards) {
+      ranks += card.rank;
+    }
+
+    let score = 0, counter = 0;
+    for (let card of hand.cards) {
+      score += this.rankToPoint(card.rank) * 10 ** counter;
+      counter += 2;
+    }
+
+    let rankCounts = {};
+    for (let rank of ranks) {
+      rankCounts[rank] = (rankCounts[rank] || 0) + 1;
+
+      if (rankCounts[rank] === 3) {
+        return score + this.rankToPoint(rank) * 10 ** counter;
+      }
+    }
     return 0;
   }
 
