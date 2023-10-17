@@ -89,7 +89,29 @@ module.exports = class CompareHands {
   }
 
   static isTwoPair(hand) { // TODO!
-    return 0;
+    this.sortByRank(hand);
+    const handRanks = hand.cards.map(card => card.rank);
+    const uniqueRanks = [...new Set(handRanks)];
+    let pairRanks = [];
+    let nonPairRanks = [];
+
+    for (let rank of uniqueRanks) {
+      if (handRanks.filter(handRank => handRank === rank).length === 2) {
+        pairRanks.push(rank);
+      } else {
+        nonPairRanks.push(rank);
+      }
+    }
+
+    // not a two pair -> 0
+    if (pairRanks.length !== 2) { return 0; }
+
+    let score = this.rankToPoint(pairRanks[1]) * 10000 + this.rankToPoint(pairRanks[0]) + 100;
+    // Add remaining cards to score (kicker)
+    for (let rank of nonPairRanks) {
+      score += this.rankToPoint(rank);
+    }
+    return score;
   }
 
   static isOnePair(hand) { // TODO!
