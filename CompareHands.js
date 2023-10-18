@@ -40,64 +40,16 @@ module.exports = class CompareHands {
   }
 
   static isFourOfAKind(hand) {
-    let ranks = '';
-    for (let card of hand.cards) {
-      ranks += card.rank;
-    }
-
-    let score = 0, counter = 0;
-    for (let card of hand.cards) {
-      score += this.rankToPoint(card.rank) * 10 ** counter;
-      counter += 2;
-    }
-
-    let rankCounts = {};
-    for (let rank of ranks) {
-      rankCounts[rank] = (rankCounts[rank] || 0) + 1;
-
-      if (rankCounts[rank] === 4) {
-        return score + this.rankToPoint(rank) * 10 ** counter;
-      }
-    }
-    return 0;
+    let { ranksWithCount, otherRanks } = this.getRanksWithCount(hand, 4);
+    if (ranksWithCount.length !== 1) { return 0; }
+    return this.getScore([...otherRanks, ...ranksWithCount]);
   }
 
   static isFullHouse(hand) {
-    let ranks = '';
-    for (let card of hand.cards) {
-      ranks += card.rank;
-    }
-
-    let score = 0, counter = 0;
-    for (let card of hand.cards) {
-      score += this.rankToPoint(card.rank) * 10 ** counter;
-      counter += 2;
-    }
-
-    let rankCounts = {};
-    for (let rank of ranks) {
-      rankCounts[rank] = (rankCounts[rank] || 0) + 1;
-    }
-
-    let threeOfAKind = false, twoOfAKind = false;
-    let threeOfAKindRank = '', twoOfAKindRank = '';
-    for (let rank in rankCounts) {
-      if (rankCounts[rank] === 3) {
-        threeOfAKind = true;
-        threeOfAKindRank = rank;
-      }
-      if (rankCounts[rank] === 2) {
-        twoOfAKind = true;
-        twoOfAKindRank = rank;
-      }
-    }
-
-    if (threeOfAKind && twoOfAKind) {
-      score += this.rankToPoint(threeOfAKindRank) * 10 ** counter;
-      return score;
-    }
-
-    return 0;
+    let { ranksWithCount: pair } = this.getRanksWithCount(hand, 2);
+    let { ranksWithCount: threeOfAKind } = this.getRanksWithCount(hand, 3);
+    if (pair.length !== 1 || threeOfAKind.length !== 1) { return 0; }
+    return this.getScore([...pair, ...threeOfAKind]);
   }
 
   static isFlush(hand) {
@@ -139,95 +91,26 @@ module.exports = class CompareHands {
   }
 
   static isThreeOfAKind(hand) {
-    let ranks = '';
-    for (let card of hand.cards) {
-      ranks += card.rank;
-    }
-
-    let score = 0, counter = 0;
-    for (let card of hand.cards) {
-      score += this.rankToPoint(card.rank) * 10 ** counter;
-      counter += 2;
-    }
-
-    let rankCounts = {};
-    for (let rank of ranks) {
-      rankCounts[rank] = (rankCounts[rank] || 0) + 1;
-
-      if (rankCounts[rank] === 3) {
-        return score + this.rankToPoint(rank) * 10 ** counter;
-      }
-    }
-    return 0;
+    let { ranksWithCount, otherRanks } = this.getRanksWithCount(hand, 3);
+    if (ranksWithCount.length !== 1) { return 0; }
+    return this.getScore([...otherRanks, ...ranksWithCount]);
   }
 
   static isTwoPair(hand) {
-    this.sortByRank(hand);
-    const handRanks = hand.cards.map(card => card.rank);
-    const uniqueRanks = [...new Set(handRanks)];
-    let pairRanks = [];
-    let nonPairRanks = [];
-
-    for (let rank of uniqueRanks) {
-      if (handRanks.filter(handRank => handRank === rank).length === 2) {
-        pairRanks.push(rank);
-      } else {
-        nonPairRanks.push(rank);
-      }
-    }
-
-    // not a two pair -> 0
-    if (pairRanks.length !== 2) { return 0; }
-
-    // Add score 
-    let score = 0;
-    let counter = 0;
-    for (let rank of nonPairRanks) {
-      score += this.rankToPoint(rank) * 10 ** counter;
-      counter += 2;
-    }
-    score += this.rankToPoint(pairRanks[1]) * 10 ** (counter + 2) + this.rankToPoint(pairRanks[0]) * 10 ** (counter);
-    return score;
+    let { ranksWithCount, otherRanks } = this.getRanksWithCount(hand, 2);
+    if (ranksWithCount.length !== 2) { return 0; }
+    return this.getScore([...otherRanks, ...ranksWithCount]);
   }
 
   static isOnePair(hand) {
-    this.sortByRank(hand);
-    const handRanks = hand.cards.map(card => card.rank);
-    const uniqueRanks = [...new Set(handRanks)];
-    let pairRanks = [];
-    let nonPairRanks = [];
-
-    for (let rank of uniqueRanks) {
-      if (handRanks.filter(handRank => handRank === rank).length === 2) {
-        pairRanks.push(rank);
-      } else {
-        nonPairRanks.push(rank);
-      }
-    }
-
-    // not a one pair -> 0
-    if (pairRanks.length !== 1) { return 0; }
-
-    // Add score 
-    let score = 0;
-    let counter = 0;
-    for (let rank of nonPairRanks) {
-      score += this.rankToPoint(rank) * 10 ** counter;
-      counter += 2;
-    }
-    score += this.rankToPoint(pairRanks[0]) * 10 ** counter
-    return score;
+    let { ranksWithCount, otherRanks } = this.getRanksWithCount(hand, 2);
+    if (ranksWithCount.length !== 1) { return 0; }
+    return this.getScore([...otherRanks, ...ranksWithCount]);
   }
 
   static isHighestCard(hand) {
     this.sortByRank(hand);
-    let score = 0;
-    let counter = 0;
-    for (let card of hand.cards) {
-      score += this.rankToPoint(card.rank) * 10 ** counter;
-      counter += 2;
-    }
-    return score;
+    return this.rankToPoint(hand.cards[4].rank);
   }
 
   // helper functions below:
@@ -243,5 +126,51 @@ module.exports = class CompareHands {
     });
   }
 
+  /**
+   * Count occurences of each rank in a hand
+   * @param {Hand} hand 
+   * @returns {Object} An object with the rank as key and the number of times it appears in the hand as value
+   */
+  static countRanks(hand) {
+    let rankCounts = {};
+    for (let card of hand.cards) {
+      rankCounts[card.rank] = (rankCounts[card.rank] || 0) + 1;
+    }
+    return rankCounts;
+  }
 
+  /**
+   * Get ranks that appear a certain number of times in a hand
+   * @param {Hand} hand
+   * @param {Number} count
+   * @returns {Object} An object with `ranksWithCount` and `otherRanks`
+   */
+  static getRanksWithCount(hand, count) {
+    let rankCounts = this.countRanks(hand);
+    let ranksWithCount = [];
+    let otherRanks = [];
+    for (let rank in rankCounts) {
+      if (rankCounts[rank] === count) {
+        ranksWithCount.push(rank);
+      } else {
+        otherRanks.push(rank);
+      }
+    }
+    return { ranksWithCount, otherRanks };
+  }
+
+  /**
+   * Get the score of a hand
+   * @param {Array} ranks The ranks of the cards in the hand in the order of least to most important
+   * @returns {Number} The score of the hand
+   */
+  static getScore(ranks) {
+    let score = 0;
+    let counter = 0;
+    for (let rank of ranks) {
+      score += this.rankToPoint(rank) * 10 ** counter;
+      counter += 2;
+    }
+    return score;
+  }
 }
