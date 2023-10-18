@@ -143,7 +143,7 @@ module.exports = class CompareHands {
    * Get ranks that appear a certain number of times in a hand
    * @param {Hand} hand
    * @param {Number} count
-   * @returns {Object} An object with `ranksWithCount` and `otherRanks`
+   * @returns {Object} An object with `ranksWithCount` and `otherRanks` sorted from low to high
    */
   static getRanksWithCount(hand, count) {
     let rankCounts = this.countRanks(hand);
@@ -156,6 +156,9 @@ module.exports = class CompareHands {
         otherRanks.push(rank);
       }
     }
+    // Sort ranks from low to high
+    otherRanks.sort((a, b) => this.rankToPoint(a) - this.rankToPoint(b));
+    ranksWithCount.sort((a, b) => this.rankToPoint(a) - this.rankToPoint(b));
     return { ranksWithCount, otherRanks };
   }
 
