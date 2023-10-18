@@ -30,15 +30,15 @@ test('check that isFourOfAKind returns a higher score for a stronger hand (if tw
 test('Test that isFourOfAKind returns a higher score for a stronger hand (higher kicker)', () => {
   let hand1 = new Hand('♥7', '♦7', '♣7', '♠4', '♠7');
   let hand2 = new Hand('♥7', '♦7', '♣7', '♣5', '♠7');
-  let hand1Score = CompareHands.isThreeOfAKind(hand1);
-  let hand2Score = CompareHands.isThreeOfAKind(hand2);
+  let hand1Score = CompareHands.isFourOfAKind(hand1);
+  let hand2Score = CompareHands.isFourOfAKind(hand2);
   expect(hand2Score).toBeGreaterThan(hand1Score);
 });
 
 test('Test that isFourOfAKind returns a equal score for a equal hand', () => {
   let hand1 = new Hand('♥7', '♦2', '♣7', '♠4', '♠7');
   let hand2 = new Hand('♥7', '♣2', '♣7', '♣4', '♠7');
-  let hand1Score = CompareHands.isThreeOfAKind(hand1);
-  let hand2Score = CompareHands.isThreeOfAKind(hand2);
+  let hand1Score = CompareHands.isFourOfAKind(hand1);
+  let hand2Score = CompareHands.isFourOfAKind(hand2);
   expect(hand2Score).toEqual(hand1Score);
 });
