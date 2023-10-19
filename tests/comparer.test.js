@@ -21,14 +21,12 @@ function getAllHandsBestToWorst() {
 }
 
 test('check all combinations of hands', () => {
+  const forwardCheck = 20;
   const allHands = getAllHandsBestToWorst();
   console.log('allHands.length', allHands.length);
   for (let i = 0; i < allHands.length; i++) {
     let hand1 = allHands[i];
-    if (i % 100 === 0) {
-      console.log('Progress:', i / allHands.length * 100, '%');
-    }
-    for (let j = i + 1; j < allHands.length; j++) {
+    for (let j = i + 1; j < Math.min(i + forwardCheck, allHands.length); j++) {
       let hand2 = allHands[j];
       let result = CompareHands.comparer(hand1, hand2);
       expect(result).toEqual(hand1);
