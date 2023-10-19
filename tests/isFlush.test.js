@@ -21,3 +21,11 @@ test('check that isFlush returns a higher score for a stronger hand (if two hand
   let hand2Score = CompareHands.isFlush(hand2);
   expect(hand2Score).toBeGreaterThan(hand1Score);
 });
+
+test('check that isFlush returns a higher score for a stronger hand (if two hands but with higher kicker)', () => {
+  let hand1 = new Hand('♣2', '♣6', '♣4', '♣8', '♣A');
+  let hand2 = new Hand('♦T', '♦9', '♦5', '♦Q', '♦A');
+  let hand1Score = CompareHands.isFlush(hand1);
+  let hand2Score = CompareHands.isFlush(hand2);
+  expect(hand2Score).toBeGreaterThan(hand1Score);
+});
