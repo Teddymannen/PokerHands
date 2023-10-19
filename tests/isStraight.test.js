@@ -32,3 +32,11 @@ test('check that isStraight handles ace as 1 or 14', () => {
   expect(hand2Score).toBeGreaterThan(hand1Score);
   expect(hand3Score).toBeFalsy();
 });
+
+test('check that isStraight returns a equal score for a equal hand', () => {
+  let hand1 = new Hand('♥A', '♦2', '♥3', '♣4', '♦5');
+  let hand2 = new Hand('♥A', '♦2', '♥3', '♣4', '♦5');
+  let hand1Score = CompareHands.isStraight(hand1);
+  let hand2Score = CompareHands.isStraight(hand2);
+  expect(hand2Score).toEqual(hand1Score);
+});
