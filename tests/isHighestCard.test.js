@@ -14,3 +14,11 @@ test('check that isHighestCard returns a higher score for a stronger hand (if tw
   let hand2Score = CompareHands.isHighestCard(hand2);
   expect(hand2Score).toBeGreaterThan(hand1Score);
 });
+
+test('check that isHighestCard returns a higher score for a stronger hand (if two hands but with higher kicker)', () => {
+  let hand1 = new Hand('♥2', '♦3', '♣4', '♠6', '♠A');
+  let hand2 = new Hand('♥T', '♦9', '♣5', '♠Q', '♥A');
+  let hand1Score = CompareHands.isHighestCard(hand1);
+  let hand2Score = CompareHands.isHighestCard(hand2);
+  expect(hand2Score).toBeGreaterThan(hand1Score);
+});
