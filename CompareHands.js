@@ -35,7 +35,7 @@ module.exports = class CompareHands {
   static isStraightFlush(hand) {
     // if not straight or not flush -> 0
     // otherwise score of flush
-    return this.isStraight(hand) && this.isFlush(hand);
+    return this.isFlush(hand) && this.isStraight(hand);
   }
 
   static isFourOfAKind(hand) {
