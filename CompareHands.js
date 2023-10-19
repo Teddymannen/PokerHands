@@ -21,7 +21,6 @@ module.exports = class CompareHands {
     for (let comparer of comparers) {
       let hand1Score = this[comparer](hand1);
       let hand2Score = this[comparer](hand2);
-      // console.log(comparer, 'hand1Score', hand1Score, 'hand2Score', hand2Score);
       // nobody has this kind combination - continue to next comparer
       if (hand1Score === 0 && hand2Score === 0) { continue; }
       // at least has one hand has this kind of combination
