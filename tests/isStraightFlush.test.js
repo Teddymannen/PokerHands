@@ -40,3 +40,11 @@ test('check that isStraightFlush handles ace as 1 or 14', () => {
   expect(hand2Score).toBeGreaterThan(hand1Score);
   expect(hand3Score).toBeFalsy();
 });
+
+test('check that isStraightFlush returns a equal score for a equal hand', () => {
+  let hand1 = new Hand('♥9', '♥8', '♥5', '♥7', '♥6');
+  let hand2 = new Hand('♣9', '♣8', '♣5', '♣7', '♣6');
+  let hand1Score = CompareHands.isStraightFlush(hand1);
+  let hand2Score = CompareHands.isStraightFlush(hand2);
+  expect(hand2Score).toEqual(hand1Score);
+});
