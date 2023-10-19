@@ -20,7 +20,7 @@ function getAllHandsBestToWorst() {
   return allHands
 }
 
-test('check all combinations of hands', () => {
+test('Check the closest hands (by strength)', () => {
   const forwardCheck = 20;
   const allHands = getAllHandsBestToWorst();
   console.log('allHands.length', allHands.length);
