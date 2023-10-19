@@ -110,7 +110,7 @@ module.exports = class CompareHands {
 
   static isHighestCard(hand) {
     this.sortByRank(hand);
-    return this.rankToPoint(hand.cards[4].rank);
+    return this.getScore(hand.cards.map(card => card.rank));
   }
 
   // helper functions below:
