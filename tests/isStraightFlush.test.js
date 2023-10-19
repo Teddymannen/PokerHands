@@ -10,9 +10,14 @@ test('check that isStraightFlush returns truthy if straight', () => {
 });
 
 test('check that isStraightFlush returns falsey if not straight', () => {
-  let hand = new Hand('♥9', '♥8', '♥5', '♥7', '♦T');
-  let hand2 = new Hand('♥9', '♥8', '♥5', '♥7', '♥A');
-  expect(CompareHands.isStraightFlush(hand)).toBeFalsy();
+  let hands = [
+    new Hand('♥T', '♥9', '♥8', '♥7', '♦5'), // not straight flush
+    new Hand('♥T', '♥9', '♥8', '♥7', '♥5'), // flush, but not straight
+    new Hand('♥T', '♥9', '♥8', '♥7', '♦6'), // straight, but not flush
+  ];
+  for (let hand of hands) {
+    expect(CompareHands.isStraightFlush(hand)).toBeFalsy();
+  }
 });
 
 test('check that isStraightFlush returns a higher score for a stronger hand (higher straight)', () => {
