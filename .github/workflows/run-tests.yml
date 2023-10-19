@@ -4,7 +4,7 @@ name: Pokerhand Unit Tests
 # in which branch(es) should start the jobs...
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
 
 # jobs to run
 jobs:
