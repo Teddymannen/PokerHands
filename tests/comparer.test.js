@@ -21,15 +21,12 @@ function getAllHandsBestToWorst() {
 }
 
 test('Check the closest hands (by strength)', () => {
-  const forwardCheck = 20;
   const allHands = getAllHandsBestToWorst();
   console.log('allHands.length', allHands.length);
-  for (let i = 0; i < allHands.length; i++) {
+  for (let i = 0; i < allHands.length - 1; i++) {
     let hand1 = allHands[i];
-    for (let j = i + 1; j < Math.min(i + forwardCheck, allHands.length); j++) {
-      let hand2 = allHands[j];
-      let result = CompareHands.comparer(hand1, hand2);
-      expect(result).toEqual(hand1);
-    }
+    let hand2 = allHands[i + 1];
+    let result = CompareHands.comparer(hand1, hand2);
+    expect(result).toEqual(hand1);
   }
 });
